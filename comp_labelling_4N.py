@@ -22,7 +22,7 @@ def displayMatrix(m) :
 	print()
 	for r in m:
 		for c in r:
-			print(c, end=" ")
+			print( f"{c : <2}", end=" ")
 		print()	
 	print()
 
@@ -76,8 +76,23 @@ def getCC4N(imgMatrix) :
 					# 11 case --> if both label are same => assign else a entey of same labels
 					#print("11",end =" | ");
 					assignLabel(i,j,tl)
-					if tl!=ll and [tl,ll] not in equalLabel : equalLabel.append([tl,ll]);						
-					
+					#if tl!=ll and [tl,ll] not in equalLabel : equalLabel.append([tl,ll]);
+					if tl!=ll :
+						if equalLabel == [] : equalLabel.append([tl,ll])
+						else : 
+							flag1 = -1;
+							flag2 = -1;
+							n = len(equalLabel)
+							for x in range(n):
+								if tl in equalLabel[x] : flag1 = x
+								if ll in equalLabel[x] : flag2 = x
+									
+							if flag1 == -1 and flag2 == -1 : equalLabel.append([tl,ll])
+							elif flag1 == -1 and flag2 != -1 : equalLabel[flag2].append(tl)
+							elif flag1 != -1 and flag2 == -1 : equalLabel[flag1].append(ll)
+							elif flag1 != flag2 : 
+								equalLabel[flag1].extend(equalLabel[flag2])
+								equalLabel.remove(equalLabel[flag2])
 				#print(tp,lp,end=" | ");
 
 	print("___________before postprocessing________________");
@@ -85,27 +100,30 @@ def getCC4N(imgMatrix) :
 	print("labels ",label);
 	print("equal labels ",equalLabel);
 	
+	
+	newlabels = []
 	#equating labels
 	for i in range(dim[0]) :
 		for j in range(dim[1]) :
-			for [a,b] in equalLabel:
-				p = labelMatrix[i][j];
-				if p == b : labelMatrix[i][j] = a 
+			for x in equalLabel:
+				l = min(x)
+				if labelMatrix[i][j] in x : labelMatrix[i][j] = l
+				for y in x :
+					if y!=l and y in label : label.remove(y)
 				
-	for [a,b] in equalLabel:
-		if b in label: label.remove(b)
-			
+	
+	
 	print("___________after postprocessing________________");
 	displayMatrix(labelMatrix)
 	print("labels ",label);
-	
+
 	return len(label)
 
 	
 
 #-----------------main()-----------------------------#
 def main() :
-	imgMatrix = readImg("img1.png")
+	imgMatrix = readImg("img3.png")
 	print("__________________input binary image matrix____________________")
 	displayMatrix(imgMatrix);
 	c = getCC4N(imgMatrix);
