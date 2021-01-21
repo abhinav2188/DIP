@@ -56,7 +56,7 @@ def getChessBoardDist(pt1,pt2) :
 	return max(abs(pt1[0]-pt2[0]), abs(pt1[1]-pt2[1]))
 	
 '''
-	getEuclideanDist(pt1,pt2) calcutates chessboard distance b/w two points in the image matrix
+	getEuclideanDist(pt1,pt2) calcutates euclidean distance b/w two points in the image matrix
 	pt1, pt2 are arrays of form [x,y] where x,y are the coordinates of these points
 '''
 def getEuclideanDist(pt1,pt2) :
@@ -93,6 +93,8 @@ def getBoundaryPts(imgMatrix) :
 				if flag : pts.append([i,j])
 	return pts
 	
+''' desc: getSurroundingPts(pt,imgMatrix) returns the surrounding points of a point in a image matrix
+'''
 def getSurroundingPts(pt,imgMatrix) :
 	pts = []
 	x = pt[0]
